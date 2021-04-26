@@ -4,49 +4,47 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private final static int SIZE = 10_000;
+    private final static int CAPACITY = 10_000;
 
-    Resume[] storage = new Resume[SIZE];
+    private int size = 0;
+
+    Resume[] storage = new Resume[CAPACITY];
 
     void clear() {
-        int size = getAll().length;
-        for (int i = 0; i < size; i ++) {
-            this.storage[i] = null;
+        for (int i = 0; i < size; i++) {
+            storage[i] = null;
         }
+        size = 0;
     }
 
     void save(Resume r) {
-        if (size() < SIZE) {
-            this.storage[size()] = r;
+        if (size < CAPACITY) {
+            storage[size++] = r;
         }
     }
 
     Resume get(String uuid) {
-        int size = getAll().length;
         for (int i = 0; i < size; i++) {
-            if (this.storage[i].uuid.equals(uuid)) {
-                return this.storage[i];
+            if (storage[i].uuid.equals(uuid)) {
+                return storage[i];
             }
         }
         return null;
     }
 
     void delete(String uuid) {
-        Resume[] result = new Resume[SIZE];
-        int size = getAll().length;
-        for (int i = 0; i < size; i++) {
-            if (this.storage[i].uuid.equals(uuid)) {
-                this.storage[i] = null;
-                break;
+        for (int i = 0, j = 0; i < size; i++, j++) {
+            if (j < size) {
+                if (storage[i].uuid.equals(uuid)) {
+                    storage[i] = ++j < size ? storage[j] : null;
+                } else {
+                    storage[i] = storage[j];
+                }
+            } else {
+                storage[i] = null;
             }
         }
-        int i = 0;
-        for (Resume r : this.storage) {
-            if (r != null) {
-                result[i++] = r;
-            }
-        }
-        this.storage = result;
+        --size;
     }
 
     /**
@@ -56,12 +54,12 @@ public class ArrayStorage {
         int size = size();
         Resume[] result = new Resume[size];
         for (int i = 0; i < size; i++) {
-            result[i] = this.storage[i];
+            result[i] = storage[i];
         }
         return result;
     }
 
     int size() {
-        return Arrays.stream(this.storage).filter(x -> x != null).toArray().length;
+        return size;
     }
 }
