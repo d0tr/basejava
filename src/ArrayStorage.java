@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 /**
  * Array based storage for Resumes
  */
@@ -35,15 +33,16 @@ public class ArrayStorage {
     void delete(String uuid) {
         int actualSize = size;
         for (int i = 0, j = 0; i < size; i++, j++) {
-            if (j < size) {
-                if (storage[i].uuid.equals(uuid)) {
-                    storage[i] = ++j < size ? storage[j] : null;
-                    --actualSize;
-                } else {
+            if (storage[i].uuid.equals(uuid)) {
+                j += 1;
+                if (j < size) {
                     storage[i] = storage[j];
+                } else {
+                    storage[i] = null;
                 }
+                --actualSize;
             } else {
-                storage[i] = null;
+                storage[i] = storage[j];
             }
         }
         size = actualSize;
