@@ -6,7 +6,7 @@ public class ArrayStorage {
 
     private int size = 0;
 
-    Resume[] storage = new Resume[CAPACITY];
+    private Resume[] storage = new Resume[CAPACITY];
 
     void clear() {
         for (int i = 0; i < size; i++) {
