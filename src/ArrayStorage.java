@@ -34,15 +34,13 @@ public class ArrayStorage {
         int actualSize = size;
         for (int i = 0, j = 0; i < size; i++, j++) {
             if (storage[i].uuid.equals(uuid)) {
-                j += 1;
-                if (j < size) {
-                    storage[i] = storage[j];
-                } else {
-                    storage[i] = null;
-                }
-                --actualSize;
-            } else {
+                j++;
+                actualSize--;
+            }
+            if (j < size) {
                 storage[i] = storage[j];
+            } else {
+                storage[i] = null;
             }
         }
         size = actualSize;
